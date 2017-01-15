@@ -14,6 +14,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@/github.com/luut/poc-angular2/common.git"
+    "url": "git+ssh://git@/https://github.com/superjurio/heroebook.git"
   }
 }
