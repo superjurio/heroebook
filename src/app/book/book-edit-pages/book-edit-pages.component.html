@@ -1,0 +1,75 @@
+
+
+
+
+<div class="row">
+
+    <div class="col-md-3">
+
+        <table class="table table-hover table-striped table-bordered">
+            <thead>
+            <tr class="info">
+                <th >Num</th>
+                <th>Desc</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let bookPage of bookPages" (click)="onSelect(bookPage)" [class.selected]="bookPage === selectedBookPage">
+                <td>
+                    {{bookPage.numPage}}
+                </td>
+                <td>
+                    {{bookPage.contentText}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="col-md-8">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h2 class="panel-title">Création de la page</h2>
+            </div>
+
+
+            <div class="panel-body">
+
+                <div class="row">
+                    <!--<div *ngIf="form.controls.titleUnique.errors && submitted" class="alert alert-danger col-md-6">-->
+                    <!--Le titre saisi existe déja, veuillez en saisir un autre-->
+                    <!--</div>-->
+                </div>
+
+                <br>
+
+                <form [formGroup]="form" (ngSubmit)="onSubmit(form.value,form.valid)" novalidate="novalidate">
+
+                    <div class="form-group">
+
+                        <input type="hidden" name="numPage" ng-value="form.numPage" />
+
+                        <div class="row">
+                            <textarea id="contentText" formControlName="contentText" rows="7" class="col-md-6" placeholder="Contenu de la page" name="contentText"></textarea>
+                        </div>
+                        <div class="row">
+                            <div *ngIf="form.controls.contentText.errors && submitted" class="alert alert-danger col-md-2">
+                            La description est obligatoire
+                            </div>
+                        </div>
+                        <br>
+                        <button type="submit"  class="btn btn-primary">Créer</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    </div>
+

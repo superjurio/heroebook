@@ -1,0 +1,54 @@
+
+<div>
+
+        <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2 class="panel-title">Authentification</h2>
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="row">
+                <div *ngIf="form.controls.userUnknown.errors && submitted" class="alert alert-danger col-md-6">
+                   Bad memory !! Essayez autre chose !
+                </div>
+           </div>
+
+            <br>
+
+            <form [formGroup]="form" (ngSubmit)="onSubmit(form.value,form.valid)" novalidate="novalidate">
+                <div class="form-group">
+                    <div class="row">
+                        <input type="text" id="username" formControlName="username" class="col-md-2" placeholder="Pseudo" name="username"/>
+                    </div>
+                    <div class="row">
+                        <div *ngIf="form.controls.username.errors && submitted" class="alert alert-danger col-md-2">
+                            Le pseudo est obligatoire
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                <div class="row">
+                    <input type="text" id="password" formControlName="password" class="col-md-2" placeholder="Mot de passe" name="password"/>
+                    </div>
+                    <div class="row">
+                        <div *ngIf="form.controls.password.errors && submitted" class="alert alert-danger col-md-2">
+                            Le mots de passe est obligatoire
+                        </div>
+                    </div>
+                    <br>
+                </div>
+
+                    <br>
+                    <button type="submit"  class="btn btn-primary">Se connecter</button>
+
+            </form>
+            </div>
+          </div>
+
+
+</div>
+

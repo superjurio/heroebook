@@ -1,0 +1,19 @@
+{
+  "name": "common-heroe-book",
+  "version": "1.0.4",
+  "description": "etc",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "author": "jul <julienhacc@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@/github.com/luut/poc-angular2/common.git"
+  }
+}

@@ -1,0 +1,66 @@
+
+<div>
+
+        <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2 class="panel-title">Fiche de création de mon livre</h2>
+        </div>
+
+
+        <div class="panel-body">
+
+            <div class="row">
+                <div *ngIf="form.controls.titleUnique.errors && submitted" class="alert alert-danger col-md-6">
+                    Le titre saisi existe déja, veuillez en saisir un autre
+                </div>
+           </div>
+
+            <br>
+
+            <form [formGroup]="form" (ngSubmit)="onSubmit(form.value,form.valid)" novalidate="novalidate">
+                <div class="form-group">
+                    <div class="row">
+                        <input type="text" id="title" formControlName="title" class="col-md-2" placeholder="Titre du livre" name="title"/>
+                    </div>
+                    <div class="row">
+                        <div *ngIf="form.controls.title.errors && submitted" class="alert alert-danger col-md-2">
+                            Le titre est obligatoire
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                <div class="row">
+                        <textarea id="description" formControlName="description" rows="3" class="col-md-3" placeholder="Description du livre" name="description"></textarea>
+                    </div>
+                    <div class="row">
+                        <div *ngIf="form.controls.description.errors && submitted" class="alert alert-danger col-md-2">
+                            La description est obligatoire
+                        </div>
+                    </div>
+                    <br>
+                </div>
+
+                <div class="form-group">
+
+                    <div class="row">
+                        <label>Choisi la couverture de ton livre légendaire </label>
+                    </div>
+
+                    <div class="row">
+                        <custom-file-upload formControlName="filesToUpload"></custom-file-upload>
+                    </div>
+
+                    <br>
+                    <button type="submit"  class="btn btn-primary">Créer</button>
+                </div>
+
+
+            </form>
+            </div>
+          </div>
+
+
+</div>
+

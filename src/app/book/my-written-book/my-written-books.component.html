@@ -1,0 +1,25 @@
+
+<!--<custom-loader #myCustomLoader ></custom-loader>-->
+<table class="table table-hover table-striped table-bordered">
+    <thead>
+        <tr class="info">
+            <th class="col-md-1">Couverture</th>
+            <th class="col-md-1">Titre</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let book of books" (click)="onSelect(book)" [class.selected]="book === selectedBook">
+            <td>
+                <img *ngIf="book.fileCoverPic" width="300" height="300" src="data:image/png;base64,{{book.fileCoverPic}}">
+                <img *ngIf="!book.fileCoverPic" width="300" height="300" src="assets/img/default-book-cover.png">
+            </td>
+            <td>
+                {{book.title}}
+            </td>
+            <td>
+                <button (click)="editPages(book)">Editer les pages</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
