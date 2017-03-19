@@ -45,6 +45,10 @@ export class BooksComponent implements OnInit{
     })
    }
 
+  accessBookDetail(book : Book): void {
+    this.bookService.trackVisitBook(book);
+    // this.router.navigate(['/book/pages/edit', book.id]);
+  }
 
   ngOnInit(): void {
     this.getBooks();

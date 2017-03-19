@@ -6,6 +6,7 @@
             <th class="col-md-1">Couverture</th>
             <th class="col-md-1">Titre</th>
             <th>Description</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -19,6 +20,9 @@
             </td>
             <td>
                 {{book.description}}
+            </td>
+            <td>
+                <button (click)="accessBookDetail(book)">Voir le livre</button>
             </td>
         </tr>
     </tbody>

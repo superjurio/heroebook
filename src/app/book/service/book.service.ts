@@ -4,15 +4,26 @@ import 'rxjs/add/operator/toPromise';
 import {Book} from "../model/book";
 import {ServiceStatusResponse} from "../../../../server/common/repository/ServiceStatusResponse";
 import {HttpUtils} from "../../common/service/HttpUtils";
+import {TrackBookDto} from "../model/trackBookDto";
 
 
 @Injectable()
 export class BookService{
 
     private bookUrl = '/api/book';
+    private trackingVisitBookUrl = 'localhost/visit-book';
+
     private headers = new Headers({'Content-Type': 'application/json'});
 
     constructor(private http: Http) { }
+
+    trackVisitBook(book : Book) : void{
+        console.log("trackVisitBook : "+JSON.stringify(book.id));
+
+        const trackBook : TrackBookDto = new TrackBookDto(book.authorId,book.id);
+
+        this.http.post(this.trackingVisitBookUrl, JSON.stringify(trackBook), {headers: this.headers}).yyo
+    }
 
     create(book: Book): Promise<ServiceStatusResponse> {
         console.log("create book : "+JSON.stringify(book));
