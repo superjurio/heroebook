@@ -22,7 +22,7 @@ export class BookService{
 
         const trackBook : TrackBookDto = new TrackBookDto(book.authorId,book.id);
 
-        this.http.post(this.trackingVisitBookUrl, JSON.stringify(trackBook), {headers: this.headers}).yyo
+        this.http.post(this.trackingVisitBookUrl, JSON.stringify(trackBook), {headers: this.headers})
     }
 
     create(book: Book): Promise<ServiceStatusResponse> {

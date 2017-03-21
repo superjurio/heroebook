@@ -17,6 +17,7 @@ import {Response} from "~express/lib/response";
 import {NextFunction} from "~express/lib/router/index";
 import {error, info} from "winston";
 import {ConfigManager} from "./config/ConfigManager";
+import socketIo = require('socket.io');
 
 export class Server {
 
@@ -32,9 +33,15 @@ export class Server {
         this.app.use(bodyParser.json());
         this.app.use(morgan('short'));
         this.app.use(compression());
-         this.initMiddlewareSession();
+        this.initMiddlewareSession();
         this.initMiddlewareAuthent();
         RoutingExpressInjection.getInstance().init(Path.resolve(__dirname)+"/api/**/**Controller.js",this.app,upload,passport);
+
+        var io: SocketIO.Server = socketIo(this.app);
+
+        io.on('connection', (socket) =>{
+            info("user connected");
+        });
 
         //manage crash app
         process.on('uncaughtException', function(ex) {
@@ -42,6 +49,8 @@ export class Server {
          });
 
         this.app.use(this.errorHandler);
+
+
 
         const server = this.app.listen(6080, "localhost", () => {
             const {address, port} = server.address();

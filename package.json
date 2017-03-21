@@ -23,6 +23,7 @@
     "@angular/router": "^3.0.0",
     "@types/lodash": "^4.14.38",
     "@types/node-uuid": "0.0.28",
+    "@types/socket.io": "^1.4.28",
     "@types/winston": "0.0.29",
     "body-parser": "^1.15.2",
     "bootstrap": "^3.3.7",
