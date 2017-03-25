@@ -1,6 +1,7 @@
 
 CREATE KEYSPACE cassandrademocql WITH replication = {'class': 'SimpleStrategy', 'replication_factor': '1'}  AND durable_writes = true;
 
+
 CREATE TABLE cassandrademocql.questionnaire (
     question text PRIMARY KEY
 ) WITH bloom_filter_fp_chance = 0.01
@@ -20,6 +21,7 @@ CREATE TABLE cassandrademocql.questionnaire (
 
 CREATE TABLE cassandrademocql.book (
     id uuid PRIMARY KEY,
+    author_id uuid,
     author_pseudo text,
     cover_picture blob,
     description text,
@@ -38,10 +40,12 @@ CREATE TABLE cassandrademocql.book (
     AND min_index_interval = 128
     AND read_repair_chance = 0.0
     AND speculative_retry = '99PERCENTILE';
-CREATE INDEX index_author_pseudo ON cassandrademocql.book (author_pseudo);
+CREATE INDEX index_author_id ON cassandrademocql.book (author_id);
+CREATE INDEX index_title ON cassandrademocql.book (title);
 
 CREATE TABLE cassandrademocql.user (
-    username text PRIMARY KEY,
+    id uuid PRIMARY KEY,
+    username text,
     password text
 ) WITH bloom_filter_fp_chance = 0.01
     AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
@@ -57,6 +61,7 @@ CREATE TABLE cassandrademocql.user (
     AND min_index_interval = 128
     AND read_repair_chance = 0.0
     AND speculative_retry = '99PERCENTILE';
+CREATE INDEX index_username ON cassandrademocql.user (username);
 
 CREATE TABLE cassandrademocql.book_page (
     book_id uuid,

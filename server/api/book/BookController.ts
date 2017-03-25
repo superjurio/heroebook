@@ -32,7 +32,7 @@ export class BookController implements Controller{
             info("body : "+JSON.stringify(req.body));
             info("title to create: "+title);
 
-            this.bookRepository.add(new Book(null,title,description,coverPicData,req.user.username))
+            this.bookRepository.add(new Book(null,title,description,coverPicData,req.user.username,req.user.id))
             .then((res : ServiceResponse) => {
                 info("results success from add book : "+JSON.stringify(res));
                 resPost.sendStatus(200);

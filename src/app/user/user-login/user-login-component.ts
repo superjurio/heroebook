@@ -31,7 +31,7 @@ export class UserLoginComponent implements OnInit {
         this.submitted = true;
           if(valid) {
              this.resetFormControlUserUnknown();
-             let user: User = new User(userForm.username,userForm.password);
+             let user: User = new User(userForm.username,userForm.password,null);
 
              console.log("user " +JSON.stringify(user));
 

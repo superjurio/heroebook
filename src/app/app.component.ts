@@ -7,6 +7,7 @@ import {ServiceStatusResponse} from "../../server/common/repository/ServiceStatu
     template: `  
     <custom-loader></custom-loader>
     <h1>Are you a Heroe </h1>
+    <notification></notification>
     <nav>
         <a *ngIf="isGuestUser()" routerLink="/login"  routerLinkActive="active">Se connecter</a> 
         <a *ngIf="!isGuestUser()"  (click)="logout()">Se déconnecter</a> 

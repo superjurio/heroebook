@@ -26,7 +26,7 @@ export class UserService{
                 .post(this.userUrl, JSON.stringify(user), {headers: this.headers})
                 .toPromise()
                 .then(res => {
-                    console.log("success from add user");
+                    console.log("success from add user  : ",res);
                     resolve(ServiceStatusResponse.CREATED);
                 })
                 .catch((errorResp : Response) => {

@@ -39,8 +39,8 @@ export class BookCassandraRepository implements  BookRepository{
                     if(res){
                         reject(new ServiceResponse(ServiceStatusResponse.RESOURCE_ALREADY_EXISTS,"The book title  : "+book.title+" already exists"));
                     }else{
-                        var query = 'INSERT INTO book (id,title,description,cover_picture,author_pseudo) VALUES (?,?,?,?,?)';
-                        var params = [v4(),book.title,book.description,book.fileCoverPic == null ? null: book.fileCoverPic.buffer,book.authorPseudo];
+                        var query = 'INSERT INTO book (id,title,description,cover_picture,author_pseudo,author_id) VALUES (?,?,?,?,?,?)';
+                        var params = [v4(),book.title,book.description,book.fileCoverPic == null ? null: book.fileCoverPic.buffer,book.authorPseudo,book.authorId];
 
                         CassandraOperations.client.execute(query, params, { prepare: true }, function(err) {
                             if (err){
@@ -83,8 +83,8 @@ export class BookCassandraRepository implements  BookRepository{
                     if(!bookFound){
                         resolve(null);
                     }else{
-                        let book : Book = new Book(bookFound.get("id")[0],bookFound.get("title")[0],bookFound.get("description")[0],null,bookFound.get("authorPseudo")[0]);
-                        info("book : "+bookFound);
+                        let book : Book = new Book(bookFound.get("id")[0],bookFound.get("title")[0],bookFound.get("description")[0],null,bookFound.get("authorPseudo")[0],null);
+                         info("book : "+bookFound);
                         resolve(book);
                     }
                 }
@@ -109,7 +109,9 @@ export class BookCassandraRepository implements  BookRepository{
                             for (var i = 0; i < result.rows.length; i++) {
                                 const bookFound = result.rows[i];
                                 info("current book from db : " + bookFound.title);
-                                books.push(new Book(bookFound.id,bookFound.title,bookFound.description,bookFound.cover_picture,bookFound.auhor_pseudo));
+                                books.push(new Book(bookFound.id,bookFound.title,bookFound.description,bookFound.cover_picture,bookFound.auhor_pseudo,bookFound.author_id));
+                                info("book author id :",bookFound.author_id)
+
                             }
                         }
                         resolve(books);

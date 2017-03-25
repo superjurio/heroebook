@@ -11,19 +11,27 @@ import {TrackBookDto} from "../model/trackBookDto";
 export class BookService{
 
     private bookUrl = '/api/book';
-    private trackingVisitBookUrl = 'localhost/visit-book';
+
+    private trackingVisitBookUrl = 'http://localhost:9080/visit-book';
 
     private headers = new Headers({'Content-Type': 'application/json'});
 
     constructor(private http: Http) { }
 
     trackVisitBook(book : Book) : void{
-        console.log("trackVisitBook : "+JSON.stringify(book.id));
-
+        console.log("trackVisitBook id :",book.id," and authorID : ",book);
         const trackBook : TrackBookDto = new TrackBookDto(book.authorId,book.id);
 
-        this.http.post(this.trackingVisitBookUrl, JSON.stringify(trackBook), {headers: this.headers})
-    }
+        this.http
+            .post(this.trackingVisitBookUrl, JSON.stringify(trackBook), {headers: this.headers})
+            .toPromise()
+            .then(res => {
+                console.log("tracking ok");
+            })
+            .catch((errorResp : Response) => {
+                console.log("problem to track ",errorResp.status);
+            });
+     }
 
     create(book: Book): Promise<ServiceStatusResponse> {
         console.log("create book : "+JSON.stringify(book));

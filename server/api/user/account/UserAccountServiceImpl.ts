@@ -33,7 +33,7 @@ export class UserAccountServiceImpl implements UserAccountService {
                 if(res){
                     reject(UserAccountResp.createFailResponse(new ServiceResponse(ServiceStatusResponse.RESOURCE_ALREADY_EXISTS,"The username  : "+username+" already exists")));
                 }else {
-                    let user : User = new User(username,bCrypt.hashSync(password, bCrypt.genSaltSync(10), null));
+                    let user : User = new User(username,bCrypt.hashSync(password, bCrypt.genSaltSync(10)), null);
                     this.userAccountRepository.add(user)
                         .then((res : ServiceResponse) => {
                             info("results success from add user : "+JSON.stringify(res));
@@ -57,6 +57,7 @@ export class UserAccountServiceImpl implements UserAccountService {
         if(_.isEmpty(username) ||_.isEmpty(password)){
             throw new Error("Error: username and password should be not null");
         }
+        info("username : ",username, ", password : ",password)
         return new Promise<UserAccountResp>((resolve, reject) => {
 
             this.userAccountRepository.find(username)

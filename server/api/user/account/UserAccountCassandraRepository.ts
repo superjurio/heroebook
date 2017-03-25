@@ -7,6 +7,7 @@ import {ServiceStatusResponse} from "../../../common/repository/ServiceStatusRes
 import {User} from "../../../../src/app/user/model/user";
 import {UserAccountRepository} from "./UserAccountRepository";
 import {injectable} from "inversify";
+import {v4} from "node-uuid";
 
 @injectable()
 export class UserAccountCassandraRepository implements UserAccountRepository{
@@ -26,8 +27,8 @@ export class UserAccountCassandraRepository implements UserAccountRepository{
                     if(res){
                         reject(new ServiceResponse(ServiceStatusResponse.RESOURCE_ALREADY_EXISTS,"The user title  : "+user.username+" already exists"));
                     }else{
-                        var query = 'INSERT INTO user (username,password) VALUES (?,?)';
-                        var params = [user.username,user.password];
+                        var query = 'INSERT INTO user (id,username,password) VALUES (?,?,?)';
+                        var params = [v4(),user.username,user.password];
 
                         CassandraOperations.client.execute(query, params, { prepare: true }, function(err) {
                             if (err){
@@ -70,7 +71,7 @@ export class UserAccountCassandraRepository implements UserAccountRepository{
                         resolve(null);
                     }else{
                         info('User found : '+JSON.stringify(userFound));
-                        resolve(new User(userFound.username,userFound.password));
+                        resolve(new User(userFound.username,userFound.password,userFound.id));
                     }
                 }
             });
@@ -78,13 +79,16 @@ export class UserAccountCassandraRepository implements UserAccountRepository{
     }
 
     exists(username: String): Promise<Boolean> {
+        info("Check if user exists : ",username);
+
         return this.find(username)
             .then((res) => {
                 return Promise.resolve(res!=null);
             })
             .catch((res) => {
+                info("Problem to check user exists");
                 return Promise.resolve(false);
-            })
+             })
     }
 
 

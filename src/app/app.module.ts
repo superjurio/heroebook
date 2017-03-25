@@ -27,6 +27,8 @@ import {MyWrittenBookComponent} from "./book/my-written-book/my-written-books.co
 import {BookEditPagesComponent} from "./book/book-edit-pages/book-edit-pages.component";
 import {BookEditPagesService} from "./book/service/book-edit-pages.service";
 import {UnauthorizedComponent} from "./error/unauthorized/unauthorized-component";
+import {NotificationBookService} from "./book/service/notification.book.service";
+import {NotificationComponent} from "./notification/notification-component";
 
 @NgModule({
     imports: [
@@ -51,7 +53,8 @@ import {UnauthorizedComponent} from "./error/unauthorized/unauthorized-component
         CustomLoaderComponent,
         MyWrittenBookComponent,
         BookEditPagesComponent,
-        UnauthorizedComponent
+        UnauthorizedComponent,
+        NotificationComponent
     ],
     providers: [
         HeroService,
@@ -60,6 +63,7 @@ import {UnauthorizedComponent} from "./error/unauthorized/unauthorized-component
         StorageService,
         ContextUserService,
         BookEditPagesService,
+        NotificationBookService,
         CanActivateAuthRequired,
         {
         provide: Http, useFactory: (backend: XHRBackend, options: RequestOptions, router: Router, contextUserService : ContextUserService) => {

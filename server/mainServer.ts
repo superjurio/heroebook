@@ -3,6 +3,8 @@ import * as bodyParser from "body-parser";
 import * as express from 'express';
 var morgan = require('morgan');
 var multer = require('multer');
+var http = require('http');
+
 var compression = require('compression');
 const passport = require('passport');
 const bCrypt = require('bCrypt-nodejs');
@@ -18,8 +20,9 @@ import {NextFunction} from "~express/lib/router/index";
 import {error, info} from "winston";
 import {ConfigManager} from "./config/ConfigManager";
 import socketIo = require('socket.io');
+import {Server} from "http";
 
-export class Server {
+export class MainServer {
 
     private app : express.Application;
 
@@ -37,11 +40,6 @@ export class Server {
         this.initMiddlewareAuthent();
         RoutingExpressInjection.getInstance().init(Path.resolve(__dirname)+"/api/**/**Controller.js",this.app,upload,passport);
 
-        var io: SocketIO.Server = socketIo(this.app);
-
-        io.on('connection', (socket) =>{
-            info("user connected");
-        });
 
         //manage crash app
         process.on('uncaughtException', function(ex) {
@@ -49,13 +47,17 @@ export class Server {
          });
 
         this.app.use(this.errorHandler);
+        var server = require('http').Server(this.app);
+        var io = require('socket.io')(server);
 
+        server.listen(6080);
 
+        io.on('connection', (socket) =>{
+            info("user connected");
+            socket.emit('message', { content: 'world' });
 
-        const server = this.app.listen(6080, "localhost", () => {
-            const {address, port} = server.address();
-            console.log('Listening on http://localhost:' + port);
         });
+
     }
 
     private initMiddlewareSession() {
@@ -91,7 +93,7 @@ export class Server {
         next(error);
     }
 }
-var server = new Server();
+var server = new MainServer();
 
 
 
