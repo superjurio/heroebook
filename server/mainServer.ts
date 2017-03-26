@@ -19,8 +19,9 @@ import {Response} from "~express/lib/response";
 import {NextFunction} from "~express/lib/router/index";
 import {error, info} from "winston";
 import {ConfigManager} from "./config/ConfigManager";
-import socketIo = require('socket.io');
-import {Server} from "http";
+import {SocketService} from "./api/socket/SocketService";
+import {MessageReceiveService} from "./api/event/MessageReceiveService";
+import Socket = SocketIOClient.Socket;
 
 export class MainServer {
 
@@ -28,8 +29,7 @@ export class MainServer {
 
     constructor() {
         var storage = multer.memoryStorage();
-
-         var upload = multer({storage:storage});
+        var upload = multer({storage:storage});
 
         this.app = express();
         this.app.use(bodyParser.urlencoded({extended:true}));
@@ -47,17 +47,17 @@ export class MainServer {
          });
 
         this.app.use(this.errorHandler);
-        var server = require('http').Server(this.app);
-        var io = require('socket.io')(server);
-
+        var server = http.Server(this.app);
         server.listen(6080);
 
-        io.on('connection', (socket) =>{
-            info("user connected");
-            socket.emit('message', { content: 'world' });
 
+        let socket  : Socket = null;
+
+        SocketService.getInstance().create(server,(socketValue : Socket) => {
+            socket = socketValue;
+            info("Socket generated ", socket.id)
+            MessageReceiveService.getInstance().handleActions(MessageReceiveService.getInstance().create(),socket);
         });
-
     }
 
     private initMiddlewareSession() {
