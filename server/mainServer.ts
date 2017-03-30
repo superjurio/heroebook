@@ -22,10 +22,14 @@ import {ConfigManager} from "./config/ConfigManager";
 import {SocketService} from "./api/socket/SocketService";
 import {MessageReceiveService} from "./api/event/MessageReceiveService";
 import Socket = SocketIOClient.Socket;
+import container from "./common/aop/inversify.config";
+import TYPES_INV from "./common/aop/aop-definition";
 
 export class MainServer {
 
     private app : express.Application;
+
+    private messageReceiveService : MessageReceiveService =  container.get<MessageReceiveService>(TYPES_INV.MessageReceiveService);
 
     constructor() {
         var storage = multer.memoryStorage();
@@ -50,13 +54,10 @@ export class MainServer {
         var server = http.Server(this.app);
         server.listen(6080);
 
-
-        let socket  : Socket = null;
-
         SocketService.getInstance().create(server,(socketValue : Socket) => {
-            socket = socketValue;
-            info("Socket generated ", socket.id)
-            MessageReceiveService.getInstance().handleActions(MessageReceiveService.getInstance().create(),socket);
+            let socket  : Socket = socketValue;
+            info("Socket generated ", socket.id);
+            this.messageReceiveService.initialize(socketValue);
         });
     }
 

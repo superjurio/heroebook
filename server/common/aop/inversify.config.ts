@@ -8,11 +8,14 @@ import {UserAccountServiceImpl} from "../../api/user/account/UserAccountServiceI
 import TYPES_INV from "./aop-definition";
 import {EditBookPagesCassandraRepository} from "../../api/book/edit-book-pages/EditBookPagesCassandraRepository";
 import {EditBookPagesRepository} from "../../api/book/edit-book-pages/EditBookPagesRepository";
+import {MessageReceiveService} from "../../api/event/MessageReceiveService";
+import {MessageReceiveServiceImpl} from "../../api/event/MessageReceiveServiceImpl";
 
 var container = new Container();
 container.bind<BookRepository>(TYPES_INV.BookRepository).to(BookCassandraRepository);
 container.bind<UserAccountRepository>(TYPES_INV.UserAccountRepository).to(UserAccountCassandraRepository);
 container.bind<EditBookPagesRepository>(TYPES_INV.EditBookPagesRepository).to(EditBookPagesCassandraRepository);
 container.bind<UserAccountService>(TYPES_INV.UserAccountService).to(UserAccountServiceImpl);
+container.bind<MessageReceiveService>(TYPES_INV.MessageReceiveService).to(MessageReceiveServiceImpl);
 
 export default container;
