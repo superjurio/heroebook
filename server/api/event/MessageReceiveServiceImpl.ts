@@ -7,22 +7,23 @@ import {ValueUtils} from "../../common/ValueUtils";
 import Socket = SocketIOClient.Socket;
 import {MessageReceiveService} from "./MessageReceiveService";
 import {injectable} from "inversify";
+import {ContextMessage} from "./ContextMessage";
 
 @injectable()
 export class MessageReceiveServiceImpl implements  MessageReceiveService{
 
-    initialize(socket : Socket) : void{
-        this.handleActions(this.create(),socket);
+    initialize(contextMessage : ContextMessage) : void{
+        this.handleActions(this.create(),contextMessage);
     }
 
-    private handleActions(consumer,socket : Socket){
+    private handleActions(consumer,contextMessage){
         consumer.on('message', function (message) {
             info("consumer kafka receive this message  : ",message);
 
             if(ValueUtils.isJSON(message.value)) {
                 let jsonObject =  JSON.parse(message.value);
                 info("consumer kafka receive this Valid message value to handle : ",jsonObject);
-                EventMessageService.getInstance().handleBookVisited(socket, new BookVisited(jsonObject.authorId, jsonObject.bookId))
+                EventMessageService.getInstance().handleBookVisited(contextMessage, new BookVisited(jsonObject.authorId, jsonObject.bookId))
             }else{
                 info("Wrong type of message to consume");
             }

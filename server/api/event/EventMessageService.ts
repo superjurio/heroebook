@@ -3,6 +3,7 @@ import {BookVisited} from "./BookVisited";
 import {info} from "winston";
 import {SocketService} from "../socket/SocketService";
 import Socket = SocketIOClient.Socket;
+import {ContextMessage} from "./ContextMessage";
 
 export class EventMessageService {
 
@@ -19,8 +20,8 @@ export class EventMessageService {
         return EventMessageService._instance;
     }
 
-    public handleBookVisited(socket : Socket, bookVisited : BookVisited) : void {
+    public handleBookVisited(contextMessage : ContextMessage, bookVisited : BookVisited) : void {
         info("handle book visited : ",bookVisited);
-        SocketService.getInstance().notifyBookVisitedToAuthor(socket,bookVisited);
+        SocketService.getInstance().notifyBookVisitedToAuthor(contextMessage,bookVisited);
     }
 }

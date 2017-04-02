@@ -15,11 +15,9 @@ export class NotificationComponent implements OnInit,OnDestroy {
     connection;
     messages = [];
 
-
     constructor(private notificationService: NotificationBookService) {
 
     }
-
 
     ngOnInit(): void {
         this.connection = this.notificationService.getMessages().subscribe(message => {

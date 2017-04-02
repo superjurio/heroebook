@@ -7,7 +7,7 @@
     "build-dev:webpack": "webpack --config config/webpack.dev.js",
     "build-dev": "npm run clean && npm run build-dev:webpack",
     "postinstall": "typings install",
-    "serverBack": "cross-env NODE_ENV=dev nodemon server/mainServer.js",
+    "serverBack": "cross-env NODE_ENV=dev node server/mainServer.js",
     "clean": "rimraf dist",
     "typings": "typings"
   },

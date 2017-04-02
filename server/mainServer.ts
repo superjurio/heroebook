@@ -5,6 +5,9 @@ var morgan = require('morgan');
 var multer = require('multer');
 var http = require('http');
 
+var passportSocketIo = require("passport.socketio");
+var cookieParser = require('cookie-parser')
+
 var compression = require('compression');
 const passport = require('passport');
 const bCrypt = require('bCrypt-nodejs');
@@ -24,10 +27,14 @@ import {MessageReceiveService} from "./api/event/MessageReceiveService";
 import Socket = SocketIOClient.Socket;
 import container from "./common/aop/inversify.config";
 import TYPES_INV from "./common/aop/aop-definition";
+import {ContextMessage} from "./api/event/ContextMessage";
+import socketIo = require('socket.io');
 
 export class MainServer {
 
     private app : express.Application;
+
+    private redisSessionStore;
 
     private messageReceiveService : MessageReceiveService =  container.get<MessageReceiveService>(TYPES_INV.MessageReceiveService);
 
@@ -36,6 +43,7 @@ export class MainServer {
         var upload = multer({storage:storage});
 
         this.app = express();
+        this.app.use(cookieParser());
         this.app.use(bodyParser.urlencoded({extended:true}));
         this.app.use(bodyParser.json());
         this.app.use(morgan('short'));
@@ -44,32 +52,46 @@ export class MainServer {
         this.initMiddlewareAuthent();
         RoutingExpressInjection.getInstance().init(Path.resolve(__dirname)+"/api/**/**Controller.js",this.app,upload,passport);
 
-
         //manage crash app
         process.on('uncaughtException', function(ex) {
             error("uncaughtException "+ex);
          });
 
         this.app.use(this.errorHandler);
+
         var server = http.Server(this.app);
         server.listen(6080);
 
-        SocketService.getInstance().create(server,(socketValue : Socket) => {
+        SocketService.getInstance().init(server,this.createPassportSocketIoConfig(),(socketValue : Socket) => {
             let socket  : Socket = socketValue;
             info("Socket generated ", socket.id);
-            this.messageReceiveService.initialize(socketValue);
+            const contextMessage : ContextMessage = new ContextMessage();
+            contextMessage.setSocket(socket);
+            this.messageReceiveService.initialize(contextMessage);
         });
     }
 
+    private createPassportSocketIoConfig() {
+        return passportSocketIo.authorize({
+            cookieParser: cookieParser,       // the same middleware you registrer in express
+            key: 'test',       // the name of the cookie where express/connect stores its session_id
+            secret: 'anything',    // the session_secret to parse the cookie
+            store: this.redisSessionStore,        // we NEED to use a sessionstore. no memorystore please
+        });
+    }
+
+
     private initMiddlewareSession() {
         // this.app.use(session({ secret: 'anything' }));
+        this.redisSessionStore = new RedisStore({
+            url: ConfigManager.getCurrentConfig().getConfigRedisAddress()});
+
         this.app.use(session({
-            store: new RedisStore({
-                url: ConfigManager.getCurrentConfig().getConfigRedisAddress()
-            }),
-            secret: "anything"
-            // resave: false,
-            // saveUninitialized: false
+            key : 'test',
+            store: this.redisSessionStore,
+            secret: "anything",
+            resave: false,
+            saveUninitialized: false
         }))
     }
 
