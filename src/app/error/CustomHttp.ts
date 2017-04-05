@@ -4,6 +4,7 @@ import {Http, ConnectionBackend, RequestOptions, RequestOptionsArgs, Response, H
 import {Observable} from "rxjs";
 import {Router} from "@angular/router";
 import {ContextUserService} from "../common/context/ContextUserService";
+import Raven = require("raven-js");
 @Injectable()
 
 export class CustomHttp extends Http {
@@ -36,6 +37,7 @@ export class CustomHttp extends Http {
     intercept(observable: Observable<Response>): Observable<Response> {
         return observable.catch((err, source) => {
             console.log("Handle global error , status  :",err.status);
+
             if (err.status  == 500) {
                  console.log("ERREUR 500 TECHNICAL => REDIRECT "+this._router);
                  this._router.navigate(['/indispo']);

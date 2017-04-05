@@ -27,3 +27,11 @@ import 'jquery';
 import 'lodash';
 import 'bootstrap/dist/js/bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
+
+import Raven = require('raven-js');
+
+// Configure sentry - each platform has its own DSN (Data Source Name)
+// https://docs.sentry.io/clients/javascript/
+Raven
+    .config("https://119c6aedc1264a1ebc8364495cb87fef@sentry.io/155684" )
+    .install();

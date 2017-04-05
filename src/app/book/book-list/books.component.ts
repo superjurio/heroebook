@@ -8,6 +8,7 @@ import {BookService} from "../service/book.service";
 import {Book} from "../model/book";
 import {CustomLoaderComponent} from "../../common/loader/loader.component";
 import {LoaderService} from "../../common/loader/loader-service";
+import Raven = require("raven-js");
 
 @Component({
   selector: 'my-heroes',
@@ -51,6 +52,17 @@ export class BooksComponent implements OnInit{
   }
 
   ngOnInit(): void {
+
+
+    // Raven.captureException(new Error("oups"), {
+    //   'tags': {'niveau': '1'},
+    // });
+    // Raven.captureMessage("my message!!!!", {
+    //   'tags': {'niveau': '2'},
+    // });
+
+
     this.getBooks();
   }
+
 }

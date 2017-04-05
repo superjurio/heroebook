@@ -29,6 +29,7 @@ import {BookEditPagesService} from "./book/service/book-edit-pages.service";
 import {UnauthorizedComponent} from "./error/unauthorized/unauthorized-component";
 import {NotificationBookService} from "./book/service/notification.book.service";
 import {NotificationComponent} from "./notification/notification-component";
+import {ravenErrorProvider} from "./error/ravenError.provider";
 
 @NgModule({
     imports: [
@@ -65,6 +66,7 @@ import {NotificationComponent} from "./notification/notification-component";
         BookEditPagesService,
         NotificationBookService,
         CanActivateAuthRequired,
+        ravenErrorProvider,
         {
         provide: Http, useFactory: (backend: XHRBackend, options: RequestOptions, router: Router, contextUserService : ContextUserService) => {
                  return new CustomHttp(backend, options,router,contextUserService);
