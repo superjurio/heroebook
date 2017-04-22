@@ -10,7 +10,6 @@ var cookieParser = require('cookie-parser')
 
 var compression = require('compression');
 const passport = require('passport');
-const bCrypt = require('bCrypt-nodejs');
 
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);

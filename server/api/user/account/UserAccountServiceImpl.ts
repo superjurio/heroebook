@@ -11,7 +11,7 @@ import container from "../../../common/aop/inversify.config";
 import {injectable} from "inversify";
 import TYPES_INV from "../../../common/aop/aop-definition";
 
-const bCrypt = require('bCrypt-nodejs');
+const bCrypt = require('bcrypt-nodejs');
 
 @injectable()
 export class UserAccountServiceImpl implements UserAccountService {
