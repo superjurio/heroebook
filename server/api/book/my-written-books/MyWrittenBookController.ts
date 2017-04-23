@@ -1,4 +1,3 @@
-import {Router} from "~express/lib/express";
 import * as express from 'express';
 import {info} from "winston";
 import {ControllerDecorator} from "../../../decorator/ControllerDecorator";
@@ -10,6 +9,7 @@ import TYPES_INV from "../../../common/aop/aop-definition";
 import {Book} from "../../../../src/app/book/model/book";
 import {ServiceResponse} from "../../../common/repository/ServiceResponse";
 import {AuthentUtils} from "../../../common/authent/passport/AuthentUtils";
+import {Router} from "express";
 
 
 @ControllerDecorator()
@@ -20,7 +20,7 @@ export class MyWrittenBookController implements Controller{
 
     createRouter(inputCtrl : InputCtrl): Router {
         return express.Router()
-        .get('/my-written-books',AuthentUtils.userShouldBeLogged,(req, resGet,next) => {
+        .get('/my-written-books',AuthentUtils.userShouldBeLogged,(req : any, resGet,next) => {
             info("find my-written-books");
             this.bookRepository.findBooksByAuthor(req.user.username)
                 .then((res : Book[]) => {

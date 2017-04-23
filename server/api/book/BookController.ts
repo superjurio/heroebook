@@ -1,16 +1,16 @@
-import {Router} from "~express/lib/express";
+import * as express from 'express';
 import {BookRepository} from "./BookRepository";
 import {ControllerDecorator} from "../../decorator/ControllerDecorator";
 import {Book} from "../../../src/app/book/model/book";
 import {Controller} from "../../common/Controller";
-import * as express from 'express';
-import {info} from "winston";
+ import {info} from "winston";
 import {ServiceResponse} from "../../common/repository/ServiceResponse";
 import {ServiceStatusResponse} from "../../common/repository/ServiceStatusResponse";
 import {InputCtrl} from "../../common/InputCtrl";
 import {AuthentUtils} from "../../common/authent/passport/AuthentUtils";
 import container from "../../common/aop/inversify.config";
 import TYPES_INV from "../../common/aop/aop-definition";
+import {Router} from "express";
 
 
 @ControllerDecorator()
@@ -22,7 +22,7 @@ export class BookController implements Controller{
     createRouter(inputCtrl : InputCtrl): Router {
         return express.Router().
 
-        post('/book',AuthentUtils.userShouldBeLogged,inputCtrl.multer.single("coverPicFile"), (req, resPost, next) => {
+        post('/book',AuthentUtils.userShouldBeLogged,inputCtrl.multer.single("coverPicFile"), (req : any, resPost, next) => {
 
             var title = req.body.title;
             var description = req.body.description;

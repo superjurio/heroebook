@@ -1,6 +1,5 @@
 import {UserAccountResp} from "../../../api/user/account/UserAccountResp";
 import {info} from "winston";
-import {Response} from "~express/lib/express";
 export class AuthentUtils{
 
     public static login(req, resp: UserAccountResp, res) {

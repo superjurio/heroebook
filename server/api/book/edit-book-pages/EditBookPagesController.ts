@@ -1,4 +1,3 @@
-import {Router} from "~express/lib/express";
 import * as express from 'express';
 import {info} from "winston";
 import {ControllerDecorator} from "../../../decorator/ControllerDecorator";
@@ -12,6 +11,7 @@ import {AuthentUtils} from "../../../common/authent/passport/AuthentUtils";
 import {EditBookPagesRepository} from "./EditBookPagesRepository";
 import {BookPage} from "../../../../src/app/book/book-edit-pages/bookPage";
 import {ServiceStatusResponse} from "../../../common/repository/ServiceStatusResponse";
+import {Router} from "express";
 
 
 @ControllerDecorator()

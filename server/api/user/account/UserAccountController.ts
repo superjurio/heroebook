@@ -1,4 +1,3 @@
-import {Router} from "~express/lib/express";
 import {ControllerDecorator} from "../../../decorator/ControllerDecorator";
 import {Book} from "../../../../src/app/book/model/book";
 import {Controller} from "../../../common/Controller";
@@ -6,7 +5,6 @@ import * as express from 'express';
 import {info} from "winston";
 import {ServiceResponse} from "../../../common/repository/ServiceResponse";
 import {ServiceStatusResponse} from "../../../common/repository/ServiceStatusResponse";
-import {Server} from "../../../server";
 import {InputCtrl} from "../../../common/InputCtrl";
 import {UserAccountServiceImpl} from "./UserAccountServiceImpl";
 import {UserAccountResp} from "./UserAccountResp";
@@ -14,6 +12,7 @@ import {AuthentUtils} from "../../../common/authent/passport/AuthentUtils";
 import {UserAccountService} from "./UserAccountService";
 import TYPES_INV from "../../../common/aop/aop-definition";
 import container from "../../../common/aop/inversify.config";
+import {Router} from "express";
 
 
 @ControllerDecorator()
@@ -25,7 +24,7 @@ export class UserAccountController implements Controller{
 
         return express.Router().
 
-        post('/user', (req, res, next)=> {
+        post('/user', (req : any, res, next)=> {
             this.userAccountService.subscribe(req.body.username,req.body.password)
                 .then((resp:UserAccountResp) => {
                     info("results success from add user : "+JSON.stringify(req.user));
@@ -40,7 +39,7 @@ export class UserAccountController implements Controller{
                     }
             });
     }).
-        post('/user/login',AuthentUtils.checkUserIsLogged, (req, res, next)=> {
+        post('/user/login',AuthentUtils.checkUserIsLogged, (req : any, res, next)=> {
             this.userAccountService.authenticate(req.body.username,req.body.password)
                 .then((resp:UserAccountResp) => {
                     info("results success from login user : "+JSON.stringify(req.user));
@@ -56,7 +55,7 @@ export class UserAccountController implements Controller{
             });
        }).
 
-        get('/user/logout',(req,res)=>{
+        get('/user/logout',(req : any,res)=>{
              info("logout step start");
              req.logout();
              req.session.destroy();

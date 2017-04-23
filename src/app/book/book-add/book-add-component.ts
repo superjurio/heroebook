@@ -2,11 +2,11 @@ import {Component} from '@angular/core';
 import {OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {BookService} from "../service/book.service";
-import {Book} from "../model/book";
 import {BookForm} from "../model/bookForm";
 import {FormGroup, FormBuilder, Validators, FormControl, AbstractControl} from "@angular/forms";
 import {ServiceResponse} from "../../../../server/common/repository/ServiceResponse";
 import {ServiceStatusResponse} from "../../../../server/common/repository/ServiceStatusResponse";
+import {Book} from "../model/book";
 
 @Component({
     selector: 'book-add',
@@ -31,7 +31,7 @@ export class BookAddComponent implements OnInit {
              this.resetFormControlTitleUnique();
              console.log("this.filesToUpload " +bookForm.filesToUpload);
              console.log("this.filesToUpload.name " +bookForm.filesToUpload.name);
-             let book: Book = new Book(null,bookForm.title,bookForm.description,bookForm.filesToUpload,null);
+             let book: Book = new Book(null,bookForm.title,bookForm.description,bookForm.filesToUpload,null,null);
 
              console.log("book " +JSON.stringify(book));
 

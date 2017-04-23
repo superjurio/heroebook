@@ -16,9 +16,6 @@ const RedisStore = require('connect-redis')(session);
 import Path = require("path");
 import "reflect-metadata";
 import {RoutingExpressInjection} from "./RoutingInjection";
-import {Request} from "~express/lib/request";
-import {Response} from "~express/lib/response";
-import {NextFunction} from "~express/lib/router/index";
 import {error, info} from "winston";
 import {ConfigManager} from "./config/ConfigManager";
 import {SocketService} from "./api/socket/SocketService";
@@ -28,6 +25,7 @@ import container from "./common/aop/inversify.config";
 import TYPES_INV from "./common/aop/aop-definition";
 import {ContextMessage} from "./api/event/ContextMessage";
 import socketIo = require('socket.io');
+import {NextFunction, Request, Response} from "express";
 
 export class MainServer {
 
@@ -59,7 +57,7 @@ export class MainServer {
         this.app.use(this.errorHandler);
 
         var server = http.Server(this.app);
-        server.listen(6080);
+        server.listen(6080,'0.0.0.0');
 
         SocketService.getInstance().init(server,this.createPassportSocketIoConfig(),(socketValue : Socket) => {
             let socket  : Socket = socketValue;

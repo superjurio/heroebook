@@ -143,7 +143,7 @@ export class BookCassandraRepository implements  BookRepository{
                             for (var i = 0; i < result.rows.length; i++) {
                                 const bookFound : any = result.rows[i];
                                 info("current book from db : " + bookFound.title);
-                                books.push(new Book(bookFound.id,bookFound.title,bookFound.description,bookFound.cover_picture,bookFound.auhor_pseudo));
+                                books.push(new Book(bookFound.id,bookFound.title,bookFound.description,bookFound.cover_picture,bookFound.auhor_pseudo,bookFound.author_id));
                             }
                         }
                         resolve(books);
